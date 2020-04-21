@@ -40,6 +40,7 @@ You can get your api key to be used in this document here: [https://www.mapmyind
     <button onclick="rev_geocode();">rev_geocode</button>
     <button onclick="Many_to_Many_distance_matrix();">Many_to_Many_distance_matrix</button>
     <button onclick="distance_matrix();">distance_matrix</button>
+    <button onclick="route();">Draw route</button>
     <!-- // logic -->
     <script>
     // Creating Map
@@ -145,56 +146,12 @@ You can get your api key to be used in this document here: [https://www.mapmyind
 ```
 #### Call Routing API
 ```js
-function route(){
-            jsonp('https://apis.mapmyindia.com/advancedmaps/v1/<Key>/route_adv/driving/77.227434,28.610981;77.212021,28.616679;77.252021,28.616879;77.292021,28.616699?alternatives=true&&geometries=polyline&overview=full&exclude=&steps=true&region=ind', function(data) {
-                console.log(data);
-                pts1 = decode_path(data.routes[0].geometry);
-                console.log(pts1);
-                polyline = new MapmyIndia.Polyline({
-                    map:map,
-                    path: pts1,
-                    strokeColor: "red",
-                    strokeOpacity:1,
-                    strokeWeight: 2,
-                    lineGap:0,
-                    fitbounds:true
-                });
-            });
-        }
-```
-#### Route Path Decoder
-```js
-function decode_path(encoded) {
-            if (encoded != 'undefined') {
-                var pts = [];
-                var index = 0, len = encoded.length;
-                var lat = 0, lng = 0;
-                while (index < len) {
-                    var b, shift = 0, result = 0;
-                    do {
-                        b = encoded.charAt(index++).charCodeAt(0) - 63;
-                        result |= (b & 0x1f) << shift;
-                        shift += 5;
-                    } while (b >= 0x20);
-
-                    var dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-                    lat += dlat;
-                    shift = 0;
-                    result = 0;
-                    do {
-                        b = encoded.charAt(index++).charCodeAt(0) - 63;
-                        result |= (b & 0x1f) << shift;
-                        shift += 5;
-                    } while (b >= 0x20);
-                    var dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-                    lng += dlng;
-                    pts.push([lat / 1E5, lng / 1E5]);
-                }
-                return pts;
-            } else {
-                return '';
-            }
-        }
+    function route(){
+            jsonp('https://apis.mapmyindia.com/advancedmaps/v1/<Key>/route_adv/driving/77.227434,28.610981;77.212021,28.616679;77.252021,28.616879;77.292021,28.616699?alternatives=true&&geometries=polyline&overview=full&exclude=&steps=true&region=ind',
+        function(data) {
+        console.log(data);
+        });
+    }
 ```
 ```html
     </script>
